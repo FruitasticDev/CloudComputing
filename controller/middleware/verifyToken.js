@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-// Middleware untuk memverifikasi JWT
 const verifyToken = (req, res, next) => {
   const token = req.header('Authorization');
 
@@ -9,8 +8,8 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, 'your_secret_key'); // Ganti dengan secret key yang sesuai
-    req.user = decoded; // Menyimpan data pengguna yang ter-decode
+    const decoded = jwt.verify(token, 'your_secret_key'); 
+    req.user = decoded; 
     next();
   } catch (err) {
     res.status(400).send('Token tidak valid');
