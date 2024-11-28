@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const db = require('../db');  // Mengimpor db.js untuk terhubung ke Firebase
+const db = require('../db');
 const admin = require('firebase-admin');
 const router = express.Router();
 const verifyToken = require('../controller/middleware/verifyToken');
@@ -11,13 +11,13 @@ const firestore = db.firestore();
 router.post('/register', async (req, res) => {
   const { name, email, password, address } = req.body;
 
-  // Cek apakah email sudah terdaftar
+ 
   const userSnapshot = await firestore.collection('users').where('email', '==', email).get();
   if (!userSnapshot.empty) {
     return res.status(400).send('Email sudah digunakan');
   }
 
-  // Enkripsi password
+
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // Simpan data pengguna ke Firestore
@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
   });
   
 });
-// Route untuk Login
+
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
   
@@ -66,7 +66,7 @@ router.post('/login', async (req, res) => {
     });
   });
   
-  // Route yang dilindungi
+ 
   router.get('/protected', verifyToken, (req, res) => {
     res.status(200).send('Akses berhasil ke endpoint yang dilindungi');
   });
