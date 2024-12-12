@@ -18,6 +18,11 @@
 Fruitastic-Backend is a backend component of Fruitastic, an application that tracks fruit freshness and helps users assess the quality of the fruit they consume.
 
 
+## Backend and Cloud Architecture
+
+![FruitasticDev Cloud Architecture]![End User fix](https://github.com/user-attachments/assets/6b392282-a4b6-4d9d-a49a-32c1434ff2e7)
+
+
 ## Tech Stack
 
 - Express.js
