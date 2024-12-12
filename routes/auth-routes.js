@@ -41,31 +41,58 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
+
+  try {
+      const userSnapshot = await firestore.collection('users').where('email', '==', email).get();
+      if (userSnapshot.empty) {
+          return res.status(404).send('Email tidak ditemukan');
+      }
+
+      const userDoc = userSnapshot.docs[0];
+      const user = userDoc.data();
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+          return res.status(401).send('Password salah');
+      }
+
+      const token = jwt.sign(
+          { userId: userDoc.id },
+          'your_secret_key',
+          { expiresIn: '1h' }
+      );
+
+      res.status(200).json({
+          message: 'Login berhasil',
+          token: token,
+          user: {
+              name: user.name,
+              email: user.email,
+              address: user.address
+          }
+      });
+  } catch (error) {
+      console.error('Error during login:', error);
+      res.status(500).send('Terjadi kesalahan pada server');
+  }
+});
   
-    const userSnapshot = await firestore.collection('users').where('email', '==', email).get();
-    if (userSnapshot.empty) {
-      return res.status(404).send('Email tidak ditemukan');
-    }
+router.post('/feedback', async (req, res) => {
+  const { feedback } = req.body;
+
+  if (!feedback || feedback.trim() === '') {
+    return res.status(400).send('Feedback tidak boleh kosong');
+  }
+
   
-    const user = userSnapshot.docs[0].data();
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).send('Password salah');
-    }
-  
-    const token = jwt.sign(
-      { userId: userSnapshot.docs[0].id },
-      'your_secret_key',
-      { expiresIn: '1h' }
-    );
-  
-    res.status(200).json({
-      message: 'Login berhasil',
-      token: token,
+
+    res.status(201).json({
+      message: 'Feedback berhasil disimpan',
+      feedback: feedback
     });
-  });
-  
+ 
+});
  
   router.get('/protected', verifyToken, (req, res) => {
     res.status(200).send('Akses berhasil ke endpoint yang dilindungi');
