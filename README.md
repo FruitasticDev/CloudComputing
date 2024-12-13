@@ -76,7 +76,7 @@ APP_ID
 ```
 
 ## Documentation
-Dcoumentation API url: [https://docs.google.com/document/u/0/d/1dEyJzISDItxLhURuvhBKuBnJBaLflC3K/edit?usp=sharing&rtpof=true&sd=true&pli=1&authuser=0]
+Documentation API url: [https://docs.google.com/document/u/0/d/1dEyJzISDItxLhURuvhBKuBnJBaLflC3K/edit?usp=sharing&rtpof=true&sd=true&pli=1&authuser=0]
 
 ## Local Development
 Follow these steps to run the Fruittastic-Backend locally:
